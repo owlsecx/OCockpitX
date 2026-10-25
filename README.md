@@ -18,20 +18,18 @@
 
 ## 📌 Overview
 
-Offline Cockpit web console configuration hardening auditor
+OCockpitX is an offline, read-only auditor for the Cockpit web console configuration that never runs commands or opens network connections. It reviews cockpit.conf, ws-certs.d certificates (via a stdlib DER parser), the cockpit.socket/service units, the PAM stack, polkit rules and firewalld exposure. More than 80 rules carry severity, CWE and MITRE ATT&CK tags with remediation, and it can audit a live host or a mounted image via --root.
 
 ---
 
 ## ✨ Features
 
-- Offline, read-only audit of a Cockpit installation (live host or mounted image via --root) — never runs commands, never opens network connections
-- cockpit.conf — AllowUnencrypted, Origins, LoginTo, AllowMultiHost, ProtocolHeader, ForwardedForHeader, MaxStartups, IdleTimeout, Banner, auth schemes, typos
-- ws-certs.d — stdlib DER parser: expiry, key size, signature algorithm, self-signed, key permissions
-- cockpit.socket / cockpit.service drop-ins — effective ListenStream resolution, --no-tls, --local-session
-- PAM stack, disallowed-users, polkit .rules / .pkla, sudoers escalation path, machines.d, firewalld zones
-- 80+ rules with severity, CWE, MITRE ATT&CK, remediation
-- Export TXT / Markdown / JSON / CSV / SARIF 2.1.0
-- Self-test --demo, CI gates --fail-on / --min-severity
+- cockpit.conf checks: AllowUnencrypted, Origins, LoginTo, AllowMultiHost, IdleTimeout
+- ws-certs.d stdlib DER parser: expiry, key size, signature algorithm, self-signed, perms
+- cockpit.socket/service drop-in analysis with effective ListenStream resolution
+- PAM stack, disallowed-users, polkit rules and sudoers escalation review
+- 80+ rules with severity, CWE and MITRE ATT&CK plus remediation
+- Hardened templates and export TXT/MD/JSON/CSV/SARIF 2.1.0
 
 ---
 
@@ -45,7 +43,10 @@ Offline Cockpit web console configuration hardening auditor
 ## 🚀 Usage
 
 ```bash
-./OCockpitX
+./OCockpitX --scan
+./OCockpitX --conf /etc/cockpit/cockpit.conf --format json -o report.json --fail-on high
+./OCockpitX --root /mnt/image --scan
+./OCockpitX --help
 ```
 
 ---
